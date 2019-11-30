@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/945e93a52c.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>TheCar - Pesquisa</title>
+
+</head>
+
+<body onload="verificaLogin(); pesquisa(); exibeNomeUsuario();">
+
+    <div class="container-fluid">
+
+        <nav class="fixed-top navbar navbar-expand-lg navbar-light bg-blue text-white p-0 pl-5 pr-5">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo-2.png" class="p-0 m-0" width="130" height="100" alt="TheCar">
+            </a>
+            <ul class="justify-content-end navbar-nav navbar-collapse">
+                <li class="nav-item">
+                    <div>
+                        <i class="fa fa-user-circle fa-3x" aria-hidden="true"></i>
+                    </div>
+
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle ml-3 drop" style="color: white" href="#"
+                        id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"></a>
+                    <div class="dropdown-menu bg-oneblue" style="color: white" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="perfil.html">Perfil</a>
+                        <a class="dropdown-item" href="#">Sair <i class="fa fa-sign-out" aria-hidden="true"></i> </a>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+
+        <div class="dropdown-divider pb-5"></div>
+
+        <article class="align-self-center">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+
+                    <div style="background-color: white; border-radius: 6px; border: 1px solid rgba(0,0,0,.125); padding-bottom: 10px;">
+                        <form id="form-pesquisa">
+                            <h5 class="card-header bg-blue text-white">Pesquisar veículos</h5>
+                            <div style="width: 96%; margin-left: auto; margin-right: auto;">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputCity">Bairro</label>
+                                        <input type="text" class="form-control" id="bairro" placeholder="Ex.: Paquetá">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEstado">Data inicio aluguel</label>
+                                        <input type="date" class="form-control" id="dataInicioAluguel">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputCEP">Data fim aluguel</label>
+                                        <input type="date" class="form-control" id="dataFimAluguel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto" style="margin-right: auto; margin-left: auto; width: 181px;">
+                                <button class="btn btn-lg btn-success btn-search" type="button" onclick="pesquisa();">Pesquisa</button>
+                                <i class="fa fa-search h4 text-body fa-2x"></i>
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+                <!--end of col-->
+            </div>
+
+            <div class="tabela" id="tabela">
+
+                <table class="table table-condensed" id="myTable">
+                    <thead class="card-header bg-blue text-white">
+                        <tr>
+                            <th scope="col">Locatário</th>
+                            <th scope="col">Carro</th>
+                            <th scope="col">Bairro</th>
+                            <th scope="col">Contato</th>
+                            <th scope="col">Mais sobre</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light" id="exibeVeiculos">
+                        <tr></tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </article>
+
+        <footer class="fixed-bottom p-3 bg-blue text-white">
+            <div class="row">
+                <div class="col-md-9 text-white">
+                    <a href="#" class="text-decoration-none text-white on">TheCar</a>
+                </div>
+                <div class="col-md-1 text-right text-white">
+                    <a href="#" class="text-decoration-none text-white on">contato</a>
+                </div>
+                <div class="col-md-1 text-right text-white">
+                    <a href="#" class="text-decoration-none text-white on">ajuda</a>
+                </div>
+                <div class="col-md-1 text-right text-white">
+                    <a href="#" class="text-decoration-none text-white on">sobre</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content" >
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Dados do Locatário</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+            <div class="modal-body" id="infoAluguel">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success">Alugar</button>
+              </div>
+          </div>
+        </div>
+      </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
