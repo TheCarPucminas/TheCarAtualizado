@@ -124,26 +124,29 @@ public class VeiculoService {
 		ListaDisponibilidade listaDisponibilidade = new ListaDisponibilidade();
 		List<Veiculo> veiculosDisponiveis = new ArrayList<Veiculo>();
 
+		LocalDateTime dataInicial =  LocalDateTime.parse(query.get("dataInicial"),formatter);
+		LocalDateTime dataFinal =  LocalDateTime.parse(query.get("dataFinal"),formatter);
+
 		JSONObject object = new JSONObject();
 		JSONArray list = new JSONArray();
 
-		if (bairro != null && (query.get("dataInicial") == null || query.get("dataInicial") == ""
-				|| query.get("dataFinal") == null || query.get("dataFinal") == "")) {
-			veiculosDisponiveis = listVeiculo.getVeiculosPorBairro(bairro);
-		}
-		else if (query.get("dataInicial") == null || query.get("dataInicial") == ""
-				|| query.get("dataFinal") == null || query.get("dataFinal") == "") {
-			veiculosDisponiveis = listVeiculo.getAll();
+		if (bairro == null) {
+			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
 		}
 		else{
-			LocalDateTime dataInicial =  LocalDateTime.parse(query.get("dataInicial"),formatter);
-			LocalDateTime dataFinal =  LocalDateTime.parse(query.get("dataFinal"),formatter);
 			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
 			veiculosDisponiveis.retainAll(listVeiculo.getVeiculosPorBairro(bairro));
 		}
-
+		
 	    for (Veiculo veiculo : veiculosDisponiveis) {
-	 		list.put(veiculo.toJson());
+			Disponibilidade d = listaDisponibilidade.getDisponibilidade(dataInicial, dataFinal, veiculo.getId());
+
+			list.put(veiculo.toJson()
+					.put("IdDisponibilidade", d.getId())
+					.put("DataInicial", d.getDataInicio())
+					.put("DataFinal", d.getDataFinal())
+					.put("ValorDaDiaria", d.getValorDaDiaria())
+			);
 		}
 
 	    object.accumulate("values", list);

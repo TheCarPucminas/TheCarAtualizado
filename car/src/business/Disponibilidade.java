@@ -84,7 +84,7 @@ public class Disponibilidade implements Serializable {
 	
 	@Override
 	public String toString() {
-		return  "\nData de inicio: " + this.getDataInicio() + "\nData de final: " + this.getDataFinal() + "\nValor da diária: R$" + this.getValorDaDiaria();
+		return  "Id: " + this.getId()  + "\nData de inicio: " + this.getDataInicio() + "\nData de final: " + this.getDataFinal() + "\nValor da diária: R$" + this.getValorDaDiaria();
 	}
 
 	@Override

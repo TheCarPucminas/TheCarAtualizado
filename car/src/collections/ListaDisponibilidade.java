@@ -77,16 +77,14 @@ public class ListaDisponibilidade {
 	}
 
 	public Disponibilidade getDisponibilidade (LocalDateTime dataInicial, LocalDateTime dataFinal, int idVeiculo) {
+       	List<Disponibilidade> disponibilidadesPorVeiculo = getdisponibilidadesPorVeiculo(idVeiculo);
 
-		for (Disponibilidade d : disponibilidades) {
-			if ((d.getDataInicio().isBefore(dataInicial)
-					|| d.getDataInicio().equals(dataInicial))
-					&& (d.getDataFinal().isAfter(dataFinal)
-					|| d.getDataFinal().equals(dataFinal))
-					&& d.getIdVeiculo() == idVeiculo) {
-				return d;
-			}
-		}
+        for (Disponibilidade d : disponibilidadesPorVeiculo) {
+            if ((d.getDataInicio().isBefore(dataInicial) || d.getDataInicio().equals(dataInicial))
+                    && (d.getDataFinal().isAfter(dataFinal) || d.getDataFinal().equals(dataFinal))) {
+                return d;
+            }
+        }
 
 		return null;
 	}
