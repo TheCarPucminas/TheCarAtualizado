@@ -58,6 +58,7 @@ public class DisponibilidadeDAO implements DAO<Disponibilidade, String>{
 	public List<Disponibilidade> getAll() {
 		List<Disponibilidade> disponibilidades = new ArrayList<Disponibilidade>();
 		Disponibilidade disponibilidade = null;
+
 		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream inputFile = new ObjectInputStream(fis)) {
 			while (fis.available() > 0) {
 				disponibilidade = (Disponibilidade) inputFile.readObject();
@@ -65,7 +66,7 @@ public class DisponibilidadeDAO implements DAO<Disponibilidade, String>{
 				
 			}
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar pessoa no disco!");
+			System.out.println("ERRO ao buscar disponibilidades no disco!");
 			e.printStackTrace();
 		}
 		return disponibilidades;
@@ -99,17 +100,20 @@ public class DisponibilidadeDAO implements DAO<Disponibilidade, String>{
 
 	private void saveToFile(List<Disponibilidade> disponibilidades) {
 		try {
-			close();
-			boolean append = file.exists();
-			fos = new FileOutputStream(file, false); 
-			outputFile = new AppendableObjectOutputStream(fos, append);
+			file = new File("disponibilidade.bin");
+			fos = new FileOutputStream(file, false);
+			outputFile = new AppendableObjectOutputStream(fos, false);
+//			close();
+//			boolean append = file.exists();
+//			fos = new FileOutputStream(file, false);
+//			outputFile = new AppendableObjectOutputStream(fos, append);
 
 			for (Disponibilidade disponibilidade : disponibilidades) {
-				outputFile.writeObject(disponibilidade);
+				add(disponibilidade);
 			}
-			outputFile.flush();
+			//outputFile.flush();
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar produto no disco!");
+			System.out.println("ERRO ao gravar disponibilidades no disco!");
 			e.printStackTrace();
 		}
 	}
