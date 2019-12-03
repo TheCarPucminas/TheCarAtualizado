@@ -296,26 +296,18 @@ public class VeiculoService {
 		JSONObject object = new JSONObject();
 		JSONArray geral = new JSONArray();
 		JSONArray listAlugueis = new JSONArray();
-		//JSONArray listLocatario = new JSONArray();
-		JSONArray list = new JSONArray();
 
 		for (Veiculo v : veiculos) {
 			alugueis = listaAlugueis.getAlugueisPorVeiculo(v.getId());
 
 			for (Aluguel a : alugueis) {
-				//listLocatario = new JSONArray();
 				p = listaPessoas.get(a.getIdLocatario());
 				listAlugueis.put(a.toJson().put("Locatario", p.toJson()));
-//				listAlugueis.put(p.toJson());
-
 			}
 			geral.put(listAlugueis);
-
-			//geral.put(listLocatario);
 			object.accumulate(v.getPlaca(), geral);
 			geral = new JSONArray();
 			listAlugueis = new JSONArray();
-			//listLocatario = new JSONArray();
 		}
 		return object;
 	}
@@ -328,13 +320,23 @@ public class VeiculoService {
 		ListaAlugueis listaAlugueis = new ListaAlugueis();
 		List<Aluguel> alugueisCadastrados = new ArrayList<Aluguel>();
 
+		ListaVeiculo listaVeiculos = new ListaVeiculo();
+		Veiculo v = null;
+
+		ListaPessoa listaPessoas = new ListaPessoa();
+		Pessoa p = null;
+
 		alugueisCadastrados = listaAlugueis.getAlugueisPorLocatario(idLocatario);
 
 		JSONObject object = new JSONObject();
 		JSONArray list = new JSONArray();
 
 		for (Aluguel aluguel : alugueisCadastrados) {
-	 		list.put(aluguel.toJson());
+			v = listaVeiculos.getPorId(aluguel.getIdVeiculo());
+			p = listaPessoas.get(v.getIdProprietario());
+			list.put(aluguel.toJson()
+					.put("Veiculo", v.toJson())
+					.put("Proprietario", p.toJson()));
 		}
 		
 		object.accumulate("values", list);
