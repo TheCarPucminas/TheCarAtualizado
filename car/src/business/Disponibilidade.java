@@ -75,6 +75,7 @@ public class Disponibilidade implements Serializable {
 	
 	public JSONObject toJson() {
 		JSONObject obj = new JSONObject();
+		obj.put("idDisponibilidade", this.getId());
 		obj.put("idVeiculo", this.getIdVeiculo());
 		obj.put("dataInicio", this.getDataInicio());
 		obj.put("dataFinal", this.getDataFinal());

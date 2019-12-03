@@ -93,7 +93,18 @@ public class Aplicacao  implements Container {
 			}
 
 			if (path.equalsIgnoreCase("/altera-disponibilidade") && "GET".equals(method)) {
-				mensagem = veiculoService.alteraDisponibilidade(request);
+				try {
+					mensagem = veiculoService.alteraDisponibilidade(request);
+					this.enviaResposta(Status.CREATED, response, mensagem);
+				} catch (ExcecaoGeral e) {
+					JSONObject error = new JSONObject();
+					error.put("error", e.getMensagem());
+					this.enviaResposta(Status.NOT_ACCEPTABLE, response, error);
+				}
+			}
+
+			if (path.equalsIgnoreCase("/exclui-disponibilidade") && "GET".equals(method)) {
+				mensagem = veiculoService.excluiDisponibilidade(request);
 				this.enviaResposta(Status.CREATED, response, mensagem);
 			}
 			

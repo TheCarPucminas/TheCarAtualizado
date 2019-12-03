@@ -332,7 +332,21 @@ public class VeiculoService {
 		d.setDataInicio(dataInicial);
 		d.setDataFinal(dataFinal);
 		d.setValorDaDiaria(valor);
-		System.out.println(listaDisponibilidade.update(d));
+		if (!listaDisponibilidade.update(d))
+			throw new ExcecaoGeral("Algo deu errado na hora de fazer o update");
+
+
+		return d.toJson();
+	}
+
+	public JSONObject excluiDisponibilidade(Request request) throws Exception {
+		Query query = request.getQuery();
+
+		int idDisponibilidade = query.getInteger("idDisponibilidade");
+
+		ListaDisponibilidade listaDisponibilidade = new ListaDisponibilidade();
+		Disponibilidade d = listaDisponibilidade.getPorId(idDisponibilidade);
+		listaDisponibilidade.remove(d);
 
 		return d.toJson();
 	}
