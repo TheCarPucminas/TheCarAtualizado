@@ -317,4 +317,23 @@ public class VeiculoService {
 
 		return object;
 	}
+
+	public JSONObject alteraDisponibilidade(Request request) throws Exception {
+		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+		Query query = request.getQuery();
+
+		int idDisponibilidade = query.getInteger("idDisponibilidade");
+		LocalDateTime dataInicial =  LocalDateTime.parse(query.get("dataInicial"),formatter);
+		LocalDateTime dataFinal =  LocalDateTime.parse(query.get("dataFinal"),formatter);
+		double valor = query.getFloat("valorDaDiaria");
+
+		ListaDisponibilidade listaDisponibilidade = new ListaDisponibilidade();
+		Disponibilidade d = listaDisponibilidade.getPorId(idDisponibilidade);
+		d.setDataInicio(dataInicial);
+		d.setDataFinal(dataFinal);
+		d.setValorDaDiaria(valor);
+		System.out.println(listaDisponibilidade.update(d));
+
+		return d.toJson();
+	}
 }

@@ -77,10 +77,11 @@ public class DisponibilidadeDAO implements DAO<Disponibilidade, String>{
 		int index = disponibilidades.indexOf(a);
 
 		if (index != -1) {
+			disponibilidades = getAll();
 			disponibilidades.set(index, a);
+			saveToFile(disponibilidades);
 			return true;
 		}
-		saveToFile(disponibilidades);
 		return false;
 	}
 

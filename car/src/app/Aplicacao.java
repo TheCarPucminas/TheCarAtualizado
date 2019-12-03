@@ -91,6 +91,11 @@ public class Aplicacao  implements Container {
 				mensagem = veiculoService.consultaDisponibilidade(request);
 				this.enviaResposta(Status.CREATED, response, mensagem);
 			}
+
+			if (path.equalsIgnoreCase("/altera-disponibilidade") && "GET".equals(method)) {
+				mensagem = veiculoService.alteraDisponibilidade(request);
+				this.enviaResposta(Status.CREATED, response, mensagem);
+			}
 			
 			// ADICIONA ALUGUEL
 			if (path.equalsIgnoreCase("/adiciona-aluguel") && "GET".equals(method)) {
