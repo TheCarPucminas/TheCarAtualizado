@@ -2,6 +2,7 @@ package services;
 
 import java.io.IOException;
 
+import collections.ListaPessoa;
 import error.ExcecaoGeral;
 import org.json.JSONObject;
 import org.simpleframework.http.Query;
@@ -15,7 +16,7 @@ import dao.PessoaDAO;
 public class PessoaService {
 	private Pessoa pessoa;
 
-	public JSONObject login (Request request) throws IOException {
+	public JSONObject login (Request request) throws Exception {
 		String email;
 		String senha;
 		
@@ -23,18 +24,14 @@ public class PessoaService {
 		
 		senha = query.get("senha");
 		email = query.get("email");
-		PessoaDAO pessoaDAO = new PessoaDAO("pessoa.bin");
-		
-		Pessoa p1 = pessoaDAO.getEmail(email);
-		if (p1 != null) {
-			p1 = pessoaDAO.getSenha(senha);
-			if (p1 != null) {
-				return p1.toJson();
-			}
-				
-		}
-		
-		return null;
+
+		ListaPessoa pessoas = new ListaPessoa();
+		Pessoa pessoa = pessoas.consultaLogin(email, senha);
+
+		if (pessoa != null)
+			return pessoa.toJson();
+
+		throw new ExcecaoGeral("Email ou senha inválidos");
 	}
 	
 	public JSONObject add(Request request) throws Exception {

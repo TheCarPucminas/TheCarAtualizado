@@ -86,4 +86,12 @@ public class ListaPessoa {
 			return null;
 		return filtrado.get(0);
 	}
+
+	public Pessoa consultaLogin (String email, String senha) {
+		List<Pessoa> filtrado = new ArrayList<Pessoa>();
+		pessoas.stream().filter(pessoa -> pessoa.getEmail().equalsIgnoreCase(email) && pessoa.getSenha().equals(senha)).forEach(pessoa -> filtrado.add(pessoa));
+		if (filtrado == null || filtrado.isEmpty())
+			return null;
+		return filtrado.get(0);
+	}
 }

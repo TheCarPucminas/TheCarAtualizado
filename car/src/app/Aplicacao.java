@@ -72,9 +72,15 @@ public class Aplicacao  implements Container {
 			}
 			
 			if (path.equalsIgnoreCase("/login") && "GET".equals(method)) {
-				mensagem = pessoaService.login(request);
-				this.enviaResposta(Status.CREATED, response, mensagem);
-			}	
+				try {
+					mensagem = pessoaService.login(request);
+					this.enviaResposta(Status.CREATED, response, mensagem);
+				} catch (ExcecaoGeral e) {
+					JSONObject error = new JSONObject();
+					error.put("error", e.getMensagem());
+					this.enviaResposta(Status.NOT_ACCEPTABLE, response, error);
+				}
+			}
 
 			if (path.equalsIgnoreCase("/pesquisa") && "GET".equals(method)) {
 				mensagem = veiculoService.pesquisa(request);

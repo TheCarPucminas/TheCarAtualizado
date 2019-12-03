@@ -153,7 +153,6 @@ public class Pessoa implements Serializable {
 		obj.put("email", this.getEmail());
 		obj.put("nome", this.getNome());
 		obj.put("cpf", this.getCpf());
-		obj.put("senha", this.getSenha());
 		obj.put("cep", this.getEndereco().getCep());
 		obj.put("rua", this.getEndereco().getRua());
 		obj.put("numero", this.getEndereco().getNumero());
