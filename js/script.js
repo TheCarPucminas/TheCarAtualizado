@@ -79,6 +79,7 @@ function excluirVeiculo() {
 }
 
 function salvarLogin() {
+    deslogar();
     var xmlhttp = new XMLHttpRequest();
 
     var form = document.getElementById('form-login');
@@ -92,15 +93,13 @@ function salvarLogin() {
 
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4) {
-            if (xmlhttp.responseText != "") {
+            if (xmlhttp.status == 200) {
                 var responseJSON = JSON.parse(xmlhttp.responseText);
-                if (responseJSON != null && responseJSON != "") {
-                    var id = responseJSON.id;
-                    var nome = responseJSON.nome;
-                    localStorage.setItem('id', id);
-                    localStorage.setItem('nome', nome);
-                    window.location.href = "perfil.html";
-                }
+                var id = responseJSON.id;
+                var nome = responseJSON.nome;
+                localStorage.setItem('id', id);
+                localStorage.setItem('nome', nome);
+                window.location.href = "perfil.html";
             }
             else {
                 alert("LOGIN OU SENHA INVÁLIDOS");

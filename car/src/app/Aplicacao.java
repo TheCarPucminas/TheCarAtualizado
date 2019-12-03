@@ -74,7 +74,7 @@ public class Aplicacao  implements Container {
 			if (path.equalsIgnoreCase("/login") && "GET".equals(method)) {
 				try {
 					mensagem = pessoaService.login(request);
-					this.enviaResposta(Status.CREATED, response, mensagem);
+					this.enviaResposta(Status.OK, response, mensagem);
 				} catch (ExcecaoGeral e) {
 					JSONObject error = new JSONObject();
 					error.put("error", e.getMensagem());
