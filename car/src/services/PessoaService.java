@@ -23,7 +23,6 @@ public class PessoaService {
 		
 		senha = query.get("senha");
 		email = query.get("email");
-		
 		PessoaDAO pessoaDAO = new PessoaDAO("pessoa.bin");
 		
 		Pessoa p1 = pessoaDAO.getEmail(email);

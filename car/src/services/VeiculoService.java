@@ -350,4 +350,33 @@ public class VeiculoService {
 
 		return d.toJson();
 	}
+
+	public JSONObject consultaDisponibilidadePorProprietario(Request request) throws Exception {
+		Query query = request.getQuery();
+
+		int idProprietario = query.getInteger("idProprietario");
+
+		ListaVeiculo listaVeiculo = new ListaVeiculo();
+		List<Veiculo> veiculos = listaVeiculo.getVeiculosPorProprietario(idProprietario);
+		ListaDisponibilidade listaDisponibilidade = new ListaDisponibilidade();
+		List<Disponibilidade> disponibilidades;
+		JSONObject object = new JSONObject();
+		JSONArray list = new JSONArray();
+
+		for (Veiculo v : veiculos) {
+
+			disponibilidades = listaDisponibilidade.getdisponibilidadesPorVeiculo(v.getId());
+			for (Disponibilidade d : disponibilidades) {
+				list.put(d.toJson());
+			}
+			object.accumulate(v.getPlaca(), list);
+
+			list = new JSONArray();
+		}
+
+
+		//object.accumulate("values", list);
+
+		return object;
+	}
 }

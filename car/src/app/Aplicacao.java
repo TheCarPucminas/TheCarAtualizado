@@ -92,6 +92,11 @@ public class Aplicacao  implements Container {
 				this.enviaResposta(Status.CREATED, response, mensagem);
 			}
 
+			if (path.equalsIgnoreCase("/consulta-disponibilidade-proprietario") && "GET".equals(method)) {
+				mensagem = veiculoService.consultaDisponibilidadePorProprietario(request);
+				this.enviaResposta(Status.CREATED, response, mensagem);
+			}
+
 			if (path.equalsIgnoreCase("/altera-disponibilidade") && "GET".equals(method)) {
 				try {
 					mensagem = veiculoService.alteraDisponibilidade(request);
