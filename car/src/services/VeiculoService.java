@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import business.Pessoa;
+import collections.ListaPessoa;
 import error.ExcecaoGeral;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -276,6 +278,48 @@ public class VeiculoService {
 	    
 		return object;
 	}
+
+	public JSONObject consultaAluguelProprietario (Request request) throws Exception {
+		Query query = request.getQuery();
+
+		int idProprietario = query.getInteger("idProprietario");
+
+		ListaAlugueis listaAlugueis = new ListaAlugueis();
+		List<Aluguel> alugueis = new ArrayList<Aluguel>();
+
+		ListaVeiculo listaVeiculo = new ListaVeiculo();
+		List<Veiculo> veiculos = listaVeiculo.getVeiculosPorProprietario(idProprietario);
+
+		ListaPessoa listaPessoas = new ListaPessoa();
+		Pessoa p;
+
+		JSONObject object = new JSONObject();
+		JSONArray geral = new JSONArray();
+		JSONArray listAlugueis = new JSONArray();
+		JSONArray listLocatario = new JSONArray();
+		JSONArray listVeiculo = new JSONArray();
+
+		for (Veiculo v : veiculos) {
+			alugueis = listaAlugueis.getAlugueisPorVeiculo(v.getId());
+			listVeiculo.put(v.toJson());
+			for (Aluguel a : alugueis) {
+				listLocatario = new JSONArray();
+				listAlugueis.put(a.toJson());
+				p = listaPessoas.get(a.getIdLocatario());
+				listLocatario.put(p.toJson());
+
+			}
+			geral.put(listAlugueis);
+			geral.put(listVeiculo);
+			geral.put(listLocatario);
+			object.accumulate(v.getPlaca(), geral);
+			geral = new JSONArray();
+			listAlugueis = new JSONArray();
+			listLocatario = new JSONArray();
+			listVeiculo = new JSONArray();
+		}
+		return object;
+	}
 	
 	public JSONObject consultaAluguelLocatario (Request request) throws Exception {
 		Query query = request.getQuery();
@@ -284,14 +328,14 @@ public class VeiculoService {
 		
 		ListaAlugueis listaAlugueis = new ListaAlugueis();
 		List<Aluguel> alugueisCadastrados = new ArrayList<Aluguel>();
-		
+
 		alugueisCadastrados = listaAlugueis.getAlugueisPorLocatario(idLocatario);
-		
+
 		JSONObject object = new JSONObject();
 		JSONArray list = new JSONArray();
 
 		for (Aluguel aluguel : alugueisCadastrados) {
-	 		list.put(aluguel.toJson());	
+	 		list.put(aluguel.toJson());
 		}
 		
 		object.accumulate("values", list);
@@ -373,9 +417,6 @@ public class VeiculoService {
 
 			list = new JSONArray();
 		}
-
-
-		//object.accumulate("values", list);
 
 		return object;
 	}
