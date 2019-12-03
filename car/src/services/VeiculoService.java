@@ -296,27 +296,26 @@ public class VeiculoService {
 		JSONObject object = new JSONObject();
 		JSONArray geral = new JSONArray();
 		JSONArray listAlugueis = new JSONArray();
-		JSONArray listLocatario = new JSONArray();
-		JSONArray listVeiculo = new JSONArray();
+		//JSONArray listLocatario = new JSONArray();
+		JSONArray list = new JSONArray();
 
 		for (Veiculo v : veiculos) {
 			alugueis = listaAlugueis.getAlugueisPorVeiculo(v.getId());
-			listVeiculo.put(v.toJson());
+
 			for (Aluguel a : alugueis) {
-				listLocatario = new JSONArray();
-				listAlugueis.put(a.toJson());
+				//listLocatario = new JSONArray();
 				p = listaPessoas.get(a.getIdLocatario());
-				listLocatario.put(p.toJson());
+				listAlugueis.put(a.toJson().put("Locatario", p.toJson()));
+//				listAlugueis.put(p.toJson());
 
 			}
 			geral.put(listAlugueis);
-			geral.put(listVeiculo);
-			geral.put(listLocatario);
+
+			//geral.put(listLocatario);
 			object.accumulate(v.getPlaca(), geral);
 			geral = new JSONArray();
 			listAlugueis = new JSONArray();
-			listLocatario = new JSONArray();
-			listVeiculo = new JSONArray();
+			//listLocatario = new JSONArray();
 		}
 		return object;
 	}
