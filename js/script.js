@@ -127,45 +127,48 @@ function deslogar() {
 
 function pesquisa() {
     var xmlhttp = new XMLHttpRequest();
+
     var form = document.getElementById('form-pesquisa');
     var formData = new FormData(form);
 
+    var bairro = formData.get("bairro");
+
     if (formData.get("bairro"))
         var url = "?bairro=" + formData.get("bairro")
-        +"&dataInicial="+formData.get("dataInicioAluguel")
-        +"&dataFinal="+formData.get("dataFimAluguel");
+        +"&dataInicial="+formData.get("dataInicioAluguel")+"T00:00:00"
+        +"&dataFinal="+formData.get("dataFimAluguel")+"T00:00:00";
     else
-        var url = "?dataInicial=2019-11-29T10:15:30"
-        +"&dataFinal=2019-12-03T10:15:30";;
+        var url = "?dataInicial="+formData.get("dataInicioAluguel")+"T00:00:00"
+        +"&dataFinal="+formData.get("dataInicioAluguel")+"T00:00:00";
 
-    if (xmlhttp) {
-        xmlhttp.open('get', "http://localhost:8080/pesquisa" + url, true);
-        xmlhttp.send();
-    }
-
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState === 4) {
-            if (xmlhttp.status == 200) {
-                var responseJSON = JSON.parse(xmlhttp.responseText);
-
-                //Informações que vão preencher os campos da tabela
-                var tr = document.createElement('tr');
-                var dados = responseJSON.values[0];
-                var i;
-
-                if (responseJSON != null && responseJSON != "") {
-                    for (i = 0; i < dados.length; i++) {
-                        var table = document.getElementById('exibeVeiculos');
-                        var row = table.insertRow(1);
-                        row.innerHTML = `<td scope="row">${dados[i]['nome']}</td>
-                        <td>${ dados[i]['modelo']}</td>
-                        <td>${dados[i]['bairro']}</td>
-                        <td>${dados[i]['celular']}</td>
-                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" onClick="preencheModal(${i})">Mais</button></td>`;
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status == 200) {
+                    var responseJSON = JSON.parse(xmlhttp.responseText);
+    
+                    //Informações que vão preencher os campos da tabela
+                    var tr = document.createElement('tr');
+                    var dados = responseJSON.values[0];
+                    var i;
+    
+                    if (responseJSON != null && responseJSON != "") {
+                        for (i = 0; i < dados.length; i++) {
+                            var table = document.getElementById('exibeVeiculos');
+                            var row = table.insertRow(1);
+                            row.innerHTML = `<td scope="row">${dados[i]['nome']}</td>
+                            <td>${ dados[i]['modelo']}</td>
+                            <td>${dados[i]['bairro']}</td>
+                            <td>${dados[i]['celular']}</td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" onClick="preencheModal(${i})">Mais</button></td>`;
+                        }
                     }
                 }
             }
         }
+
+    if (xmlhttp) {
+        xmlhttp.open('get', "http://localhost:8080/pesquisa" + url, true);
+        xmlhttp.send();
     }
 }
 

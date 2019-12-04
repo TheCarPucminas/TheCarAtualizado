@@ -17,7 +17,7 @@
 
 </head>
 
-<body onload="verificaLogin(); pesquisa(); exibeNomeUsuario();">
+<body onload="verificaLogin(); exibeNomeUsuario();">
 
     <div class="container-fluid">
 
@@ -52,21 +52,21 @@
                 <div class="col-12 col-md-10 col-lg-8">
 
                     <div style="background-color: white; border-radius: 6px; border: 1px solid rgba(0,0,0,.125); padding-bottom: 10px;">
-                        <form id="form-pesquisa">
+                        <form method="GET" action=""  id="form-pesquisa">
                             <h5 class="card-header bg-blue text-white">Pesquisar veículos</h5>
                             <div style="width: 96%; margin-left: auto; margin-right: auto;">
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="inputCity">Bairro</label>
-                                        <input type="text" class="form-control" id="bairro" placeholder="Ex.: Paquetá">
+                                        <input type="text" class="form-control" id="bairro" placeholder="Ex.: Paquetá" name="bairro">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputEstado">Data inicio aluguel</label>
-                                        <input type="date" class="form-control" id="dataInicioAluguel">
+                                        <input type="date" class="form-control" id="dataInicioAluguel" name="dataInicioAluguel">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputCEP">Data fim aluguel</label>
-                                        <input type="date" class="form-control" id="dataFimAluguel">
+                                        <input type="date" class="form-control" id="dataFimAluguel" name="dataFimAluguel">
                                     </div>
                                 </div>
                             </div>
