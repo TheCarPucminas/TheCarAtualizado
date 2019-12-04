@@ -131,9 +131,12 @@ function pesquisa() {
     var formData = new FormData(form);
 
     if (formData.get("bairro"))
-        var url = "?bairro=" + formData.get("bairro");
+        var url = "?bairro=" + formData.get("bairro")
+        +"&dataInicial="+formData.get("dataInicioAluguel")
+        +"&dataFinal="+formData.get("dataFimAluguel");
     else
-        var url = "";
+        var url = "?dataInicial=2019-11-29T10:15:30"
+        +"&dataFinal=2019-12-03T10:15:30";;
 
     if (xmlhttp) {
         xmlhttp.open('get', "http://localhost:8080/pesquisa" + url, true);
@@ -142,7 +145,7 @@ function pesquisa() {
 
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4) {
-            if (xmlhttp.responseText != "") {
+            if (xmlhttp.status == 200) {
                 var responseJSON = JSON.parse(xmlhttp.responseText);
 
                 //Informações que vão preencher os campos da tabela

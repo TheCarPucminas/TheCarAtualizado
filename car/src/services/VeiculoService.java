@@ -134,6 +134,8 @@ public class VeiculoService {
 
 		if (bairro == null) {
 			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
+			listVeiculo.getAll().retainAll(veiculosDisponiveis);
+			System.out.println(veiculosDisponiveis);
 		}
 		else{
 			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
