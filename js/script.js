@@ -210,6 +210,86 @@ function listarVeiculos() {
     }
 }
 
+function listarAlugueisLocatario() {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "idLocatario=" + localStorage.getItem('id');
+
+    if (xmlhttp) {
+        xmlhttp.open('get', "http://localhost:8080/consulta-aluguel-locatario?" + url, true);
+        xmlhttp.send();
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4) {
+            if (xmlhttp.responseText != "") {
+                var responseJSON = JSON.parse(xmlhttp.responseText);
+
+                //Preenchendo a tabela com os alugueis feitos por quem está logado
+                var tr = document.createElement('tr');
+                var dados = responseJSON.values[0];
+                var i;
+                
+                if (responseJSON != null && responseJSON != "") {
+                    for (i = 0; i < dados.length; i++) {
+                        var table = document.getElementById('exibeAluguelLocatario');
+                        var row = table.insertRow(1);
+                        var devolvido = (dados[i]['devolvido'] == false) ? 'NÃO' : 'SIM';
+
+                        row.innerHTML = "<td>"+dados[i]['Veiculo']['modelo']+
+                                        "</td><td>"+dados[i]['Proprietario']['nome']+
+                                        "</td><td>"+dados[i]['Proprietario']['celular']+
+                                        "</td><td>"+dados[i]['dataEmprestimo']+
+                                        "</td><td>"+dados[i]['valor']+
+                                        "</td><td>"+devolvido+
+                                        "</td>";
+                    }
+                }
+            }
+        }
+    }
+}
+
+function listarAlugueisProprietario() {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "idProprietario=" + localStorage.getItem('id');
+
+    if (xmlhttp) {
+        xmlhttp.open('get', "http://localhost:8080/consulta-aluguel-proprietario?" + url, true);
+        xmlhttp.send();
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4) {
+            if (xmlhttp.responseText != "") {
+                var responseJSON = JSON.parse(xmlhttp.responseText);
+
+                //Preenchendo a tabela com os dados de quem alugou os veículos de quem está logado
+                var tr = document.createElement('tr');
+                //var dados = responseJSON.values[0];
+                var i;
+
+
+                console.log(responseJSON);
+                if (responseJSON != null && responseJSON != "") {
+                    for (i = 0; i < dados.length; i++) {
+                        var table = document.getElementById('exibeAluguelProprietario');
+                        var row = table.insertRow(1);
+                        var devolvido = (dados[i]['devolvido'] == false) ? 'NÃO' : 'SIM';
+
+                        row.innerHTML = "<td>"+'shit'+
+                                        "</td><td>"+'shit'+
+                                        "</td><td>"+'shit'+
+                                        "</td><td>"+'shit'+
+                                        "</td><td>"+'shit'+
+                                        "</td><td>"+devolvido+
+                                        "</td>";
+                    }
+                }
+            }
+        }
+    }
+}
+
 function preencheModal(i) {
     var xmlhttp = new XMLHttpRequest();
     var form = document.getElementById('form-pesquisa');
