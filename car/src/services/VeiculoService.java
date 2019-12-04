@@ -125,6 +125,8 @@ public class VeiculoService {
 	    ListaVeiculo listVeiculo = new ListaVeiculo();
 		ListaDisponibilidade listaDisponibilidade = new ListaDisponibilidade();
 		List<Veiculo> veiculosDisponiveis = new ArrayList<Veiculo>();
+		List<Veiculo> veiculos = new ArrayList<Veiculo>();
+		veiculos = listVeiculo.getAll();
 
 		LocalDateTime dataInicial =  LocalDateTime.parse(query.get("dataInicial"),formatter);
 		LocalDateTime dataFinal =  LocalDateTime.parse(query.get("dataFinal"),formatter);
@@ -134,15 +136,15 @@ public class VeiculoService {
 
 		if (bairro == null) {
 			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
-			listVeiculo.getAll().retainAll(veiculosDisponiveis);
-			System.out.println(veiculosDisponiveis);
 		}
 		else{
 			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
 			veiculosDisponiveis.retainAll(listVeiculo.getVeiculosPorBairro(bairro));
 		}
-		
-	    for (Veiculo veiculo : veiculosDisponiveis) {
+
+		veiculos.retainAll(veiculosDisponiveis);
+
+	    for (Veiculo veiculo : veiculos) {
 			Disponibilidade d = listaDisponibilidade.getDisponibilidade(dataInicial, dataFinal, veiculo.getId());
 
 			list.put(veiculo.toJson()

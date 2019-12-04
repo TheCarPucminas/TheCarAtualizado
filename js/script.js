@@ -150,8 +150,6 @@ function pesquisa() {
                     var tr = document.createElement('tr');
                     var dados = responseJSON.values[0];
                     var i;
-    
-                    if (responseJSON != null && responseJSON != "") {
                         for (i = 0; i < dados.length; i++) {
                             var table = document.getElementById('exibeVeiculos');
                             var row = table.insertRow(1);
@@ -161,7 +159,7 @@ function pesquisa() {
                             <td>${dados[i]['celular']}</td>
                             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" onClick="preencheModal(${i})">Mais</button></td>`;
                         }
-                    }
+                    
                 }
             }
         }
