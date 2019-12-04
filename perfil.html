@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">    
         <link rel="stylesheet" href="css/style.css">
     </head>
-    <body onload="exibeNomeUsuario();">
+    <body onload="exibeNomeUsuario(); verificaLogin();">
             <div class="container-fluid">
 
                     <nav class="fixed-top navbar navbar-expand-lg navbar-light bg-blue text-white p-0 pl-5 pr-5">
@@ -27,10 +27,10 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle ml-3 drop" style="color: white" href="#"
                                     id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false"><div id="nomeUsuario"></div></a>
+                                    aria-expanded="false"></a>
                                 <div class="dropdown-menu bg-oneblue" style="color: white" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" href="perfil.html">Perfil</a>
-                                    <a class="dropdown-item" href="#">Sair <i class="fa fa-sign-out" aria-hidden="true"></i> </a>
+                                    <a class="dropdown-item" onclick="deslogar();" href="index.html">Sair <i class="fa fa-sign-out" aria-hidden="true"></i> </a>
                                 </div>
                             </li>
                         </ul>
@@ -45,7 +45,7 @@
                                 <div style="background-color: white; border-radius: 6px; border: 1px solid rgba(0,0,0,.125); padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
                                     <h5 class="card-header bg-blue text-white" style="margin-right: -30px; margin-left: -30px; margin-bottom: 30px;">Olá, seja bem vindo(a) ao TheCar</h5>
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="card">
                                                     <img class="card-img-top" src="https://images.vexels.com/media/users/3/128998/isolated/preview/15630dcae2578399bfabe65c4290ed8a---cone-plana-de-carros-antigos-by-vexels.png" alt="Imagem de capa do card">
                                                     <div class="card-body">
@@ -54,16 +54,16 @@
                                                 </div>
                                             </div>
 
-                                            <!-- <div class="col-sm-4">
+                                            <div class="col-sm-4">
                                                 <div class="card">
-                                                    <img class="card-img-top" src="https://images.vexels.com/media/users/3/127695/isolated/preview/d2b7e551a595f8f61a6bb3ea89c49cec-flat-retro-car-icon-by-vexels.png" alt="Imagem de capa do card">
+                                                    <img class="card-img-top" src="https://images.vexels.com/media/users/3/127711/isolated/preview/384e0b3361d99d9c370b4037115324b9---cone-de-carro-vintage-plana-by-vexels.png" alt="Imagem de capa do card">
                                                     <div class="card-body">
                                                     <a href="#"><p class="card-text" style="text-align: center;">MEUS ALUGUEIS</p></a>
                                                 </div>
                                                 </div>
-                                            </div> -->
+                                            </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="card">
                                                     <img class="card-img-top" src="https://images.vexels.com/media/users/3/127695/isolated/preview/d2b7e551a595f8f61a6bb3ea89c49cec-flat-retro-car-icon-by-vexels.png" alt="Imagem de capa do card">
                                                     <div class="card-body">

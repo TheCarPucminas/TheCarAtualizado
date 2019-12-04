@@ -15,7 +15,7 @@
 
 </head>
 
-<body onload="exibeNomeUsuario(); verificaLogin();">
+<body onload="exibeNomeUsuario(); verificaLogin(); listarVeiculos();">
 
     <div class="container-fluid">
 
@@ -54,27 +54,17 @@
                 <table class="table table-condensed" id="myTable">
                     <thead class="card-header bg-blue text-white">
                         <tr>
-                            <th scope="col">Modelo</th>
                             <th scope="col">Marca</th>
                             <th scope="col">Placa</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Cor</th>
+                            <th scope="col">Ano</th>
+                            <th scope="col">Combustivel</th>
                             <th scope="col">Disponibilidade</th>
                         </tr>
                     </thead>
                     <tbody class="table-light" id="exibeVeiculosUsuario">
-                        <tr data-toggle="collapse" class="info" data-target="#demo1" data-parent="#myTable">
-
-                        </tr>
-                        <tr id="demo1" class="collapse">
-                            <td colspan="6" class="hiddenRow">
-                                <div>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            This is some text within a card body.
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        <tr></tr>
                     </tbody>
                 </table>
 

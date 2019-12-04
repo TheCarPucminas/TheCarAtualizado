@@ -74,7 +74,7 @@ public class Aplicacao  implements Container {
 			if (path.equalsIgnoreCase("/login") && "GET".equals(method)) {
 				try {
 					mensagem = pessoaService.login(request);
-					this.enviaResposta(Status.OK, response, mensagem);
+					this.enviaResposta(Status.CREATED, response, mensagem);
 				} catch (ExcecaoGeral e) {
 					JSONObject error = new JSONObject();
 					error.put("error", e.getMensagem());
@@ -134,11 +134,6 @@ public class Aplicacao  implements Container {
 			// CONSULTA ALUGUEL COM ID DO LOCATÁRIO
 			if (path.equalsIgnoreCase("/consulta-aluguel-locatario") && "GET".equals(method)) {
 				mensagem = veiculoService.consultaAluguelLocatario(request);
-				this.enviaResposta(Status.CREATED, response, mensagem);
-			}
-
-			if (path.equalsIgnoreCase("/consulta-aluguel-proprietario") && "GET".equals(method)) {
-				mensagem = veiculoService.consultaAluguelProprietario(request);
 				this.enviaResposta(Status.CREATED, response, mensagem);
 			}
 
