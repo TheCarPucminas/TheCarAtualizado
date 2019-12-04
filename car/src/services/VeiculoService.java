@@ -307,7 +307,7 @@ public class VeiculoService {
 				listAlugueis.put(a.toJson().put("Locatario", p.toJson()));
 			}
 			geral.put(listAlugueis);
-			object.accumulate(v.getPlaca(), geral);
+			object.accumulate("values", geral);
 			geral = new JSONArray();
 			listAlugueis = new JSONArray();
 		}
