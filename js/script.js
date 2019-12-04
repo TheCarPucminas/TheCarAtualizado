@@ -19,19 +19,16 @@ function salvarPessoa() {
         "&celular=" + formData.get("celular");
 
     xmlhttp.onreadystatechange = function () {
+        var responseJSON = JSON.parse(xmlhttp.responseText);
         if (xmlhttp.readyState === 4) {
-            var responseJSON = JSON.parse(xmlhttp.responseText);
-            if (xmlhttp.responseText != "") {
-                console.log(xmlhttp.status);
-                if (responseJSON != null && responseJSON != "" && xmlhttp.status == 201) {
-                    var id = responseJSON.id;
-                    localStorage.setItem('id', id);
-                    window.location.href = "index.html";
-                }
+            if (xmlhttp.status == 201) {
+                var id = responseJSON.id;
+                localStorage.setItem('id', id);
+                window.location.href = "index.html";
             }
-            else {
-                alert(responseJSON.error);
-            }
+        }
+        else {
+            alert(responseJSON.error);
         }
     }
 
@@ -310,7 +307,7 @@ function preencheModal(i) {
      document.getElementById('demo5').src = db[indice].imagem;
      document.getElementById('demo6').innerHTML = db[indice].sinopse;*/
 }
-//************************ CONJUNTO DE FUNÇÕES PARA IDENTIFICAR O ENDEREÇO ************************
+//******** CONJUNTO DE FUNÇÕES PARA IDENTIFICAR O ENDEREÇO ********
 function limpa_formulário_cep() {
     //Limpa valores do formulário de cep.
     document.getElementById('email').value = ("");
@@ -327,7 +324,6 @@ function limpa_formulário_cep() {
     document.getElementById('estado').value = ("");
     document.getElementById('telefone').value = ("");
     document.getElementById('celular').value = ("");
-
 }
 
 function meu_callback(conteudo) {
@@ -345,8 +341,8 @@ function meu_callback(conteudo) {
     }
 }
 
-function pesquisacep(valor) {
-
+function pesquisacep() {
+    let valor = document.forms[0].cep.value;
     //Nova variável "cep" somente com dígitos.
     var cep = valor.replace(/\D/g, '');
     console.log(cep);
@@ -385,27 +381,53 @@ function pesquisacep(valor) {
         limpa_formulário_cep();
     }
 };
-//************************ AS FUNÇÕES DE IDENTIFICAÇÃO DE ENDEREÇO TERMINAM AQUI ************************
+//******** AS FUNÇÕES DE IDENTIFICAÇÃO DE ENDEREÇO TERMINAM AQUI ********
 
-//************************ VALIDAÇÃO DE EMAIL ************************
-function validaEmail(envelope) {
-    usuario = envelope.value.substring(0, envelope.value.indexOf("@"));
-    dominio = envelope.value.substring(envelope.value.indexOf("@") + 1, envelope.value.length);
+//******** VALIDAÇÃO DE EMAIL ********
+function validaEmail() {
+    if( document.forms[0].email.value=="" || document.forms[0].email.value.indexOf('@')==-1 || document.forms[0].email.value.indexOf('.')==-1)
+	{
+	  // alert( "Por favor, informe um E-MAIL válido!" );
+	   return false;
+    }
+ }
 
-    if ((usuario.length >= 1) &&
-        (dominio.length >= 3) &&
-        (usuario.search("@") == -1) &&
-        (dominio.search("@") == -1) &&
-        (usuario.search(" ") == -1) &&
-        (dominio.search(" ") == -1) &&
-        (dominio.search(".") != -1) &&
-        (dominio.indexOf(".") >= 1) &&
-        (dominio.lastIndexOf(".") < dominio.length - 1)) {
-        document.getElementById("resposta").innerHTML = "E-mail válido";
-        alert("E-mail valido");
-    }
-    else {
-        document.getElementById("resposta").innerHTML = "<font color='green'>E-mail inválido </font>";
-        alert("E-mail invalido");
-    }
-}
+ //******** VALIDAÇÃO DE CPF ********
+ function validaCPF(){
+     let cpf = document.forms[0].cpf.value;
+    cpf = cpf.replace(/[^\d]+/g,'');	
+	if(cpf == '') return false;	
+	// Elimina CPFs invalidos conhecidos	
+	if (cpf.length != 11 || 
+		cpf == "00000000000" || 
+		cpf == "11111111111" || 
+		cpf == "22222222222" || 
+		cpf == "33333333333" || 
+		cpf == "44444444444" || 
+		cpf == "55555555555" || 
+		cpf == "66666666666" || 
+		cpf == "77777777777" || 
+		cpf == "88888888888" || 
+		cpf == "99999999999"){
+            alert( "Por favor, informe um CPF válido!" );
+            return false;	}	
+	// Valida 1o digito	
+	add = 0;	
+	for (i=0; i < 9; i ++)		
+		add += parseInt(cpf.charAt(i)) * (10 - i);	
+		rev = 11 - (add % 11);	
+		if (rev == 10 || rev == 11)		
+			rev = 0;	
+		if (rev != parseInt(cpf.charAt(9)))		
+			return false;		
+	// Valida 2o digito	
+	add = 0;	
+	for (i = 0; i < 10; i ++)		
+		add += parseInt(cpf.charAt(i)) * (11 - i);	
+	rev = 11 - (add % 11);	
+	if (rev == 10 || rev == 11)	
+		rev = 0;	
+	if (rev != parseInt(cpf.charAt(10)))
+		return false;		
+	return true; 
+ }
