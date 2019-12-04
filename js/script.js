@@ -81,6 +81,7 @@ function excluirVeiculo() {
 }
 
 function salvarLogin() {
+    deslogar();
     var xmlhttp = new XMLHttpRequest();
 
     var form = document.getElementById('form-login');
@@ -94,15 +95,13 @@ function salvarLogin() {
 
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4) {
-            if (xmlhttp.responseText != "") {
+            if (xmlhttp.status == 200) {
                 var responseJSON = JSON.parse(xmlhttp.responseText);
-                if (responseJSON != null && responseJSON != "") {
-                    var id = responseJSON.id;
-                    var nome = responseJSON.nome;
-                    localStorage.setItem('id', id);
-                    localStorage.setItem('nome', nome);
-                    window.location.href = "perfil.html";
-                }
+                var id = responseJSON.id;
+                var nome = responseJSON.nome;
+                localStorage.setItem('id', id);
+                localStorage.setItem('nome', nome);
+                window.location.href = "perfil.html";
             }
             else {
                 alert("LOGIN OU SENHA INVÁLIDOS");
@@ -130,42 +129,46 @@ function deslogar() {
 
 function pesquisa() {
     var xmlhttp = new XMLHttpRequest();
+
     var form = document.getElementById('form-pesquisa');
     var formData = new FormData(form);
 
+    var bairro = formData.get("bairro");
+
     if (formData.get("bairro"))
-        var url = "?bairro=" + formData.get("bairro");
+        var url = "?bairro=" + formData.get("bairro")
+        +"&dataInicial="+formData.get("dataInicioAluguel")+"T00:00:00"
+        +"&dataFinal="+formData.get("dataFimAluguel")+"T00:00:00";
     else
-        var url = "";
+        var url = "?dataInicial="+formData.get("dataInicioAluguel")+"T00:00:00"
+        +"&dataFinal="+formData.get("dataInicioAluguel")+"T00:00:00";
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status == 200) {
+                    var responseJSON = JSON.parse(xmlhttp.responseText);
+    
+                    //Informações que vão preencher os campos da tabela
+                    var tr = document.createElement('tr');
+                    var dados = responseJSON.values[0];
+                    var i;
+                        for (i = 0; i < dados.length; i++) {
+                            var table = document.getElementById('exibeVeiculos');
+                            var row = table.insertRow(1);
+                            row.innerHTML = `<td scope="row">${dados[i]['nome']}</td>
+                            <td>${ dados[i]['modelo']}</td>
+                            <td>${dados[i]['bairro']}</td>
+                            <td>${dados[i]['celular']}</td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" onClick="preencheModal(${i})">Mais</button></td>`;
+                        }
+                    
+                }
+            }
+        }
 
     if (xmlhttp) {
         xmlhttp.open('get', "http://localhost:8080/pesquisa" + url, true);
         xmlhttp.send();
-    }
-
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState === 4) {
-            if (xmlhttp.responseText != "") {
-                var responseJSON = JSON.parse(xmlhttp.responseText);
-
-                //Informações que vão preencher os campos da tabela
-                var tr = document.createElement('tr');
-                var dados = responseJSON.values[0];
-                var i;
-
-                if (responseJSON != null && responseJSON != "") {
-                    for (i = 0; i < dados.length; i++) {
-                        var table = document.getElementById('exibeVeiculos');
-                        var row = table.insertRow(1);
-                        row.innerHTML = `<td scope="row">${dados[i]['nome']}</td>
-                        <td>${ dados[i]['modelo']}</td>
-                        <td>${dados[i]['bairro']}</td>
-                        <td>${dados[i]['celular']}</td>
-                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" onClick="preencheModal(${i})">Mais</button></td>`;
-                    }
-                }
-            }
-        }
     }
 }
 

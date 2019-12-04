@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import business.Pessoa;
+import collections.ListaPessoa;
 import error.ExcecaoGeral;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -123,6 +125,8 @@ public class VeiculoService {
 	    ListaVeiculo listVeiculo = new ListaVeiculo();
 		ListaDisponibilidade listaDisponibilidade = new ListaDisponibilidade();
 		List<Veiculo> veiculosDisponiveis = new ArrayList<Veiculo>();
+		List<Veiculo> veiculos = new ArrayList<Veiculo>();
+		veiculos = listVeiculo.getAll();
 
 		LocalDateTime dataInicial =  LocalDateTime.parse(query.get("dataInicial"),formatter);
 		LocalDateTime dataFinal =  LocalDateTime.parse(query.get("dataFinal"),formatter);
@@ -137,8 +141,10 @@ public class VeiculoService {
 			veiculosDisponiveis = listaDisponibilidade.consultaDisponibilidade(dataInicial, dataFinal);
 			veiculosDisponiveis.retainAll(listVeiculo.getVeiculosPorBairro(bairro));
 		}
-		
-	    for (Veiculo veiculo : veiculosDisponiveis) {
+
+		veiculos.retainAll(veiculosDisponiveis);
+
+	    for (Veiculo veiculo : veiculos) {
 			Disponibilidade d = listaDisponibilidade.getDisponibilidade(dataInicial, dataFinal, veiculo.getId());
 
 			list.put(veiculo.toJson()
@@ -276,6 +282,39 @@ public class VeiculoService {
 	    
 		return object;
 	}
+
+	public JSONObject consultaAluguelProprietario (Request request) throws Exception {
+		Query query = request.getQuery();
+
+		int idProprietario = query.getInteger("idProprietario");
+
+		ListaAlugueis listaAlugueis = new ListaAlugueis();
+		List<Aluguel> alugueis = new ArrayList<Aluguel>();
+
+		ListaVeiculo listaVeiculo = new ListaVeiculo();
+		List<Veiculo> veiculos = listaVeiculo.getVeiculosPorProprietario(idProprietario);
+
+		ListaPessoa listaPessoas = new ListaPessoa();
+		Pessoa p;
+
+		JSONObject object = new JSONObject();
+		JSONArray geral = new JSONArray();
+		JSONArray listAlugueis = new JSONArray();
+
+		for (Veiculo v : veiculos) {
+			alugueis = listaAlugueis.getAlugueisPorVeiculo(v.getId());
+
+			for (Aluguel a : alugueis) {
+				p = listaPessoas.get(a.getIdLocatario());
+				listAlugueis.put(a.toJson().put("Locatario", p.toJson()));
+			}
+			geral.put(listAlugueis);
+			object.accumulate(v.getPlaca(), geral);
+			geral = new JSONArray();
+			listAlugueis = new JSONArray();
+		}
+		return object;
+	}
 	
 	public JSONObject consultaAluguelLocatario (Request request) throws Exception {
 		Query query = request.getQuery();
@@ -284,14 +323,24 @@ public class VeiculoService {
 		
 		ListaAlugueis listaAlugueis = new ListaAlugueis();
 		List<Aluguel> alugueisCadastrados = new ArrayList<Aluguel>();
-		
+
+		ListaVeiculo listaVeiculos = new ListaVeiculo();
+		Veiculo v = null;
+
+		ListaPessoa listaPessoas = new ListaPessoa();
+		Pessoa p = null;
+
 		alugueisCadastrados = listaAlugueis.getAlugueisPorLocatario(idLocatario);
-		
+
 		JSONObject object = new JSONObject();
 		JSONArray list = new JSONArray();
 
 		for (Aluguel aluguel : alugueisCadastrados) {
-	 		list.put(aluguel.toJson());	
+			v = listaVeiculos.getPorId(aluguel.getIdVeiculo());
+			p = listaPessoas.get(v.getIdProprietario());
+			list.put(aluguel.toJson()
+					.put("Veiculo", v.toJson())
+					.put("Proprietario", p.toJson()));
 		}
 		
 		object.accumulate("values", list);
@@ -373,9 +422,6 @@ public class VeiculoService {
 
 			list = new JSONArray();
 		}
-
-
-		//object.accumulate("values", list);
 
 		return object;
 	}
