@@ -26,25 +26,23 @@ import dao.VeiculoDAO;
 public class VeiculoService {
 	private Veiculo veiculo;
 	
-	public JSONObject remove(Request request) throws IOException, ExcecaoGeral {
+	public JSONObject remove(Request request) throws Exception {
 		String placa;
 		
 		Query query = request.getQuery();
 
 	    placa = query.get("placa");
 	    
-	    
-	    VeiculoDAO veiculoDAO = new VeiculoDAO("veiculo.bin");
+
+
 	    try {
-			ListaVeiculo veiculos = new ListaVeiculo();
-			Veiculo v = veiculos.getVeiculoPlaca(placa);
+			ListaVeiculo listaVeiculo = new ListaVeiculo();
+			Veiculo v = listaVeiculo.getVeiculoPlaca(placa);
+			listaVeiculo.remove(v);
+			return v.toJson();
 		} catch (Exception e) {
 			throw new ExcecaoGeral("A placa informada nao existe no sistema");
 		}
-
-		veiculoDAO.remove(veiculo);
-
-		return veiculo.toJson();
 	}
 	
 	public JSONObject add(Request request) throws Exception {

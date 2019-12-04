@@ -75,8 +75,7 @@ public class VeiculoDAO implements DAO<Veiculo, String> {
 	public boolean remove(Veiculo p) throws IOException {
 		List<Veiculo> veiculos = getAll();
 		
-		//int index = veiculos.indexOf(p);
-		int index = procuraVeiculoPlaca(veiculos, p.getPlaca());
+		int index = veiculos.indexOf(p);
 		
 		if (index != -1) {
 			veiculos.remove(index);
@@ -103,17 +102,20 @@ public class VeiculoDAO implements DAO<Veiculo, String> {
 
 	private void saveToFile(List<Veiculo> veiculos) {
 		try {
-			close();
-			boolean append = file.exists();
-			fos = new FileOutputStream(file, append); 
-			outputFile = new AppendableObjectOutputStream(fos, append);
+			file = new File("veiculo.bin");
+			fos = new FileOutputStream(file, false);
+			outputFile = new AppendableObjectOutputStream(fos, false);
+//			close();
+//			boolean append = file.exists();
+//			fos = new FileOutputStream(file, append);
+//			outputFile = new AppendableObjectOutputStream(fos, append);
 
 			for (Veiculo veiculo : veiculos) {
 				outputFile.writeObject(veiculo);
 			}
 			outputFile.flush();
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar produto no disco!");
+			System.out.println("ERRO ao gravar veiculos no disco!");
 			e.printStackTrace();
 		}
 	}
