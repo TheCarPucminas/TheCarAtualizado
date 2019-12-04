@@ -141,7 +141,7 @@ function pesquisa() {
         +"&dataFinal="+formData.get("dataFimAluguel")+"T00:00:00";
     else
         var url = "?dataInicial="+formData.get("dataInicioAluguel")+"T00:00:00"
-        +"&dataFinal="+formData.get("dataInicioAluguel")+"T00:00:00";
+        +"&dataFinal="+formData.get("dataFimAluguel")+"T00:00:00";
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4) {
@@ -151,10 +151,13 @@ function pesquisa() {
                     //Informações que vão preencher os campos da tabela
                     var tr = document.createElement('tr');
                     var dados = responseJSON.values[0];
+                    var table = document.getElementById('exibeVeiculos');
+                    
+                    table.innerHTML = ""; 
+                    //table.insertRow(1);
                     var i;
                         for (i = 0; i < dados.length; i++) {
-                            var table = document.getElementById('exibeVeiculos');
-                            var row = table.insertRow(1);
+                            var row = table.insertRow(i);
                             row.innerHTML = `<td scope="row">${dados[i]['nome']}</td>
                             <td>${ dados[i]['modelo']}</td>
                             <td>${dados[i]['bairro']}</td>
