@@ -265,22 +265,21 @@ function listarAlugueisProprietario() {
 
                 //Preenchendo a tabela com os dados de quem alugou os veículos de quem está logado
                 var tr = document.createElement('tr');
-                //var dados = responseJSON.values[0];
+                var dados = responseJSON.values[0][0];
                 var i;
 
-
-                console.log(responseJSON);
+                //console.log(dados['Locatario']['nome']);
                 if (responseJSON != null && responseJSON != "") {
                     for (i = 0; i < dados.length; i++) {
                         var table = document.getElementById('exibeAluguelProprietario');
                         var row = table.insertRow(1);
                         var devolvido = (dados[i]['devolvido'] == false) ? 'NÃO' : 'SIM';
-
-                        row.innerHTML = "<td>"+'shit'+
-                                        "</td><td>"+'shit'+
-                                        "</td><td>"+'shit'+
-                                        "</td><td>"+'shit'+
-                                        "</td><td>"+'shit'+
+//console.log(dados);                        
+                        row.innerHTML = "<td>"+dados[i]['Veiculo']['placa']+
+                                        "</td><td>"+dados[i]['Locatario']['nome']+
+                                        "</td><td>"+dados[i]['Locatario']['celular']+
+                                        "</td><td>"+dados[i]['dataEmprestimo']+
+                                        "</td><td>"+dados[i]['valor']+
                                         "</td><td>"+devolvido+
                                         "</td>";
                     }
