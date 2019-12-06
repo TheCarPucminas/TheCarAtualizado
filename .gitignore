@@ -1,4 +1,4 @@
-veiculo.bin
-aluguel.bin
-disponibilidade.bin
-pessoa.bin
+car/veiculo.bin
+car/aluguel.bin
+car/disponibilidade.bin
+car/pessoa.bin
