@@ -301,13 +301,12 @@ public class VeiculoService {
 
 		for (Veiculo v : veiculos) {
 			alugueis = listaAlugueis.getAlugueisPorVeiculo(v.getId());
-
 			for (Aluguel a : alugueis) {
 				p = listaPessoas.get(a.getIdLocatario());
-				listAlugueis.put(a.toJson().put("Locatario", p.toJson()));
+				listAlugueis.put(a.toJson().put("Locatario", p.toJson()).put("Veiculo", v.toJson()));
 			}
 			geral.put(listAlugueis);
-			object.accumulate(v.getPlaca(), geral);
+			object.accumulate("values", geral);
 			geral = new JSONArray();
 			listAlugueis = new JSONArray();
 		}
